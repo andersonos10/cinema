@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pesquisa Oficial de Satisfação — Nosso Cinema ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #110d0b;
+      --card: rgba(32, 24, 21, 0.9);
+      --elev: rgba(46, 35, 30, 0.88);
+      --border: rgba(245, 158, 11, 0.24);
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --text: #fcf8f5;
+      --muted: #bdaea3;
+      --accent: #f59e0b;
+      --accent-light: #fbbf24;
+      --accent-fg: #140f0c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(245, 158, 11, 0.18), transparent 55%),
+        radial-gradient(circle at 85% 95%, rgba(251, 113, 133, 0.12), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.15rem;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+    .top-pill {
+      font-size: 0.72rem; color: var(--accent-light); font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.7rem;
+      padding: 0.35rem 0.9rem; border-radius: 999px;
+      background: rgba(245, 158, 11, 0.1); border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .wrap { width: 100%; max-width: 435px; z-index: 10; display: flex; flex-direction: column; gap: 0.75rem; }
+
+    /* YouTube Player Box */
+    .yt-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 1.25rem; padding: 0.85rem;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.45); backdrop-filter: blur(14px);
+      animation: pop 0.4s ease forwards;
+    }
+    .yt-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+      margin-bottom: 0.65rem;
+    }
+    .yt-info { min-width: 0; }
+    .yt-title {
+      font-size: 0.8rem; font-weight: 700; color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .yt-sub { font-size: 0.7rem; color: var(--muted); }
+    .next-btn {
+      background: var(--elev); border: 1px solid var(--border-soft); color: var(--accent-light);
+      padding: 0.4rem 0.65rem; border-radius: 0.65rem; font-family: inherit;
+      font-size: 0.72rem; font-weight: 700; cursor: pointer; flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .next-btn:hover { border-color: var(--border); background: rgba(245,158,11,0.12); }
+    .yt-frame-wrap {
+      width: 100%; height: 175px; border-radius: 0.9rem; overflow: hidden;
+      background: #000; border: 1px solid var(--border-soft);
+    }
+    .yt-frame-wrap iframe { width: 100%; height: 100%; border: 0; }
+    .yt-foot {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 0.5rem; font-size: 0.7rem; color: var(--muted);
+    }
+    .yt-foot a { color: var(--accent-light); text-decoration: none; font-weight: 600; }
+    .yt-foot a:hover { text-decoration: underline; }
+
+    /* Main Card */
+    .card {
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      border-radius: 1.45rem; padding: 1.6rem;
+      box-shadow: 0 28px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px); position: relative; animation: pop 0.45s ease forwards;
+    }
+    .hidden { display: none; }
+    @keyframes pop { from { opacity: 0; transform: scale(0.93) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+    .icon {
+      width: 3.5rem; height: 3.5rem; margin: 0 auto 0.7rem; border-radius: 1.1rem;
+      background: linear-gradient(145deg, rgba(245,158,11,0.18), rgba(46,35,30,0.9));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1.85rem;
+      animation: float 3.8s ease-in-out infinite;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    h1 { font-size: 1.32rem; font-weight: 800; text-align: center; margin-bottom: 0.4rem; letter-spacing: -0.02em; }
+    .sub { text-align: center; color: var(--muted); font-size: 0.84rem; line-height: 1.45; margin-bottom: 1.15rem; }
+    .sec-lbl { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.45rem; }
+
+    /* Stars Box */
+    .star-box {
+      background: var(--elev); border: 1px solid var(--border-soft);
+      border-radius: 1.1rem; padding: 0.95rem; text-align: center; margin-bottom: 1.05rem;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .stars { display: flex; justify-content: center; gap: 0.5rem; margin: 0.4rem 0; }
+    .star-btn {
+      background: none; border: none; font-size: 1.8rem; cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s, filter 0.2s;
+      filter: drop-shadow(0 3px 8px rgba(245, 158, 11, 0.4));
+    }
+    .star-btn:hover { transform: scale(1.22); }
+    .star-dim { opacity: 0.22; filter: grayscale(100%); transform: scale(0.88); }
+    .star-msg { font-size: 0.76rem; color: var(--accent-light); font-weight: 600; min-height: 1.1rem; }
+
+    /* Options */
+    .opts { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.05rem; }
+    .opt {
+      width: 100%; text-align: left; padding: 0.72rem 0.85rem; border-radius: 0.9rem;
+      background: var(--elev); border: 1.5px solid var(--border-soft); color: var(--muted);
+      font-family: inherit; font-size: 0.79rem; font-weight: 600; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; transition: all 0.18s;
+    }
+    .opt:hover { border-color: rgba(245,158,11,0.4); color: var(--text); }
+    .opt.active {
+      border-color: var(--accent); color: var(--text);
+      background: linear-gradient(90deg, rgba(245,158,11,0.16), rgba(245,158,11,0.05));
+      box-shadow: 0 4px 15px rgba(245,158,11,0.12);
+    }
+    textarea {
+      width: 100%; padding: 0.75rem 0.85rem; border-radius: 0.9rem; background: var(--elev);
+      border: 1.5px solid var(--border-soft); color: var(--text); font-family: inherit;
+      font-size: 0.8rem; resize: none; margin-bottom: 0.95rem; outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--accent); }
+    .dodge-msg { text-align: center; font-size: 0.79rem; color: var(--text); min-height: 1.25rem; margin-bottom: 0.65rem; font-weight: 600; }
+    .arena { display: flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 3.5rem; position: relative; }
+    .btn-yes {
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      color: var(--accent-fg); border: none; padding: 0.88rem 1.3rem;
+      border-radius: 0.9rem; font-family: inherit; font-size: 0.88rem; font-weight: 800;
+      cursor: pointer; box-shadow: 0 8px 22px rgba(245,158,11,0.34); transition: transform 0.2s; z-index: 10;
+    }
+    .btn-no {
+      background: var(--elev); color: var(--muted); border: 1px solid var(--border-soft); padding: 0.88rem 0.95rem;
+      border-radius: 0.9rem; font-family: inherit; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); touch-action: none; z-index: 20;
+    }
+    .divider { border-bottom: 2px dashed var(--border-soft); margin: 0.95rem -1.6rem; }
+    .row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border-soft); font-size: 0.81rem; }
+    .row:last-child { border-bottom: none; }
+    .btn-wa {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      width: 100%; margin-top: 1.05rem; padding: 0.95rem 1rem; border-radius: 0.9rem;
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      color: var(--accent-fg); text-decoration: none;
+      font-weight: 800; font-size: 0.92rem; box-shadow: 0 8px 22px rgba(245,158,11,0.34);
+    }
+    .btn-back { display: block; width: 100%; background: none; border: none; color: var(--muted); font-family: inherit; font-size: 0.75rem; margin-top: 0.75rem; cursor: pointer; }
+    footer { font-size: 0.74rem; color: var(--muted); margin-top: 1rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <header class="top-pill">📋 Pesquisa Oficial • Pós-Cinema ✨</header>
+
+  <div class="wrap">
+    <!-- Henrique & Juliano YouTube Player -->
+    <div class="yt-box">
+      <div class="yt-head">
+        <div class="yt-info">
+          <div id="yt-title" class="yt-title">🎶 Henrique & Juliano — Aquela Pessoa</div>
+          <div class="yt-sub">Trilha sonora oficial pra responder a avaliação</div>
+        </div>
+        <button id="next-yt" type="button" class="next-btn">⏭ Outra música</button>
+      </div>
+      <div class="yt-frame-wrap">
+        <iframe
+          id="yt-iframe"
+          src="https://www.youtube.com/embed/a5vH9f0lHZg?rel=0&playsinline=1"
+          title="Henrique & Juliano no YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="yt-foot">
+        <span>Dê o play no vídeo acima 👆</span>
+        <a id="yt-link" href="https://www.youtube.com/watch?v=a5vH9f0lHZg" target="_blank" rel="noopener noreferrer">
+          Abrir no YouTube ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- Step 1: Evaluation Card -->
+    <main id="step1" class="card">
+      <div class="icon">🎬</div>
+      <h1>Avaliação Oficial do Nosso Cinema ✨</h1>
+      <p class="sub">O Ministério dos Bons Encontros solicita 30 segundos da sua atenção para avaliar a nossa noite no Via Sul:</p>
+
+      <div class="star-box">
+        <span class="sec-lbl" style="margin-bottom:0.15rem;">1. Nota para a sua companhia de hoje:</span>
+        <div class="stars">
+          <button type="button" class="star-btn" data-star="1">⭐</button>
+          <button type="button" class="star-btn" data-star="2">⭐</button>
+          <button type="button" class="star-btn" data-star="3">⭐</button>
+          <button type="button" class="star-btn" data-star="4">⭐</button>
+          <button type="button" class="star-btn" data-star="5">⭐</button>
+        </div>
+        <p id="star-msg" class="star-msg">Toque nas estrelas para escolher sua nota (1 a 5) ⭐</p>
+      </div>
+
+      <span class="sec-lbl">2. O que achou do filme (Lago dos Ossos)?</span>
+      <div class="opts">
+        <button type="button" class="opt active" data-val="A companhia salvou o filme 😊">
+          <span>🎬 O filme foi ok, mas a companhia salvou a noite</span><span>✓</span>
+        </button>
+        <button type="button" class="opt" data-val="Gostei do filme e da companhia! ✨">
+          <span>😱 Gostei! Deu uns sustos mas sobrevivemos bem</span><span></span>
+        </button>
+        <button type="button" class="opt" data-val="Na próxima vez eu escolho o filme 😂">
+          <span>😂 Na próxima vez sou eu quem escolhe o filme!</span><span></span>
+        </button>
+      </div>
+
+      <label for="comment" class="sec-lbl">3. Algum elogio, reclamação ou sugestão pro próximo?</label>
+      <textarea id="comment" rows="2" placeholder="Ex: Gostei muito de hoje! Na próxima vamos em tal lugar..."></textarea>
+
+      <p id="msg" class="dodge-msg">Pergunta final: vale um segundo encontro em breve? 👀</p>
+
+      <div class="arena">
+        <button id="yes" type="button" class="btn-yes">Vale sim! Aprovado 😊✨</button>
+        <button id="no" type="button" class="btn-no">Vou pensar 🤔</button>
+      </div>
+    </main>
+
+    <!-- Step 2: Summary & WhatsApp -->
+    <section id="step2" class="card hidden">
+      <div class="icon">🏆</div>
+      <div style="text-align:center;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-light);font-weight:700;margin-bottom:0.25rem;">Avaliação Concluída • Nosso Cinema</div>
+      <h1>Feedback Registrado! 🎉</h1>
+      <p class="sub" style="margin-bottom:0;">Confira o resumo oficial antes de enviar no WhatsApp:</p>
+
+      <div class="divider"></div>
+
+      <div>
+        <div class="row"><span style="color:var(--muted)">⭐ Nota da Companhia</span><strong id="sum-stars">5/5 (⭐⭐⭐⭐⭐)</strong></div>
+        <div class="row"><span style="color:var(--muted)">🎬 Sobre o Filme</span><strong id="sum-movie" style="text-align:right">A companhia salvou o filme 😊</strong></div>
+        <div class="row"><span style="color:var(--muted)">🔄 Vale 2º Encontro?</span><strong>Sim, aprovado! ✨</strong></div>
+        <div class="row" style="flex-direction:column;gap:0.25rem;">
+          <span style="color:var(--muted)">💬 Seu Comentário:</span>
+          <strong id="sum-comment" style="font-style:italic">"Sem reclamações, foi ótimo!"</strong>
+        </div>
+      </div>
+
+      <a id="wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-wa">
+        <span>📲</span> Enviar Avaliação no WhatsApp
+      </a>
+      <button id="back" type="button" class="btn-back">← Voltar e editar resposta</button>
+    </section>
+  </div>
+
+  <footer>SAC Oficial do Nosso Cinema • Shopping Via Sul 🎬</footer>
+
+  <script>
+    const MEU_WHATSAPP = '5585987899323';
+
+    let selectedStars = 5;
+    let verdict = 'A companhia salvou o filme 😊';
+    let count = 0;
+
+    // Playlist do Henrique & Juliano no YouTube
+    const ytSongs = [
+      { id: 'a5vH9f0lHZg', title: '🎶 Henrique & Juliano — Aquela Pessoa' },
+      { id: 'DUii0oyELNw', title: '🎶 Henrique & Juliano — Completa a Frase' },
+      { id: 'oD9izvb3gO0', title: '🎶 Henrique & Juliano — Quase Algo' },
+      { id: 'r1SgAoRsJ98', title: '🎶 Henrique & Juliano — De Trás Pra Frente' }
+    ];
+    let ytIdx = 0;
+
+    const ytIframe = document.getElementById('yt-iframe');
+    const ytTitle = document.getElementById('yt-title');
+    const ytLink = document.getElementById('yt-link');
+    const nextYt = document.getElementById('next-yt');
+
+    nextYt.addEventListener('click', () => {
+      ytIdx = (ytIdx + 1) % ytSongs.length;
+      const s = ytSongs[ytIdx];
+      ytTitle.textContent = s.title;
+      ytIframe.src = `https://www.youtube.com/embed/${s.id}?autoplay=1&rel=0&playsinline=1`;
+      ytLink.href = `https://www.youtube.com/watch?v=${s.id}`;
+    });
+
+    const starReactions = {
+      1: '1/5 estrela — Eita! Vou ter que me esforçar muito mais na próxima 😅',
+      2: '2/5 estrelas — Pelo menos não foi zero, né? Prometo melhorar! 😂',
+      3: '3/5 estrelas — Na média! No próximo encontro a gente sobe essa nota 😊',
+      4: '4/5 estrelas — Quase gabaritei! No próximo eu chego no 5 ✨',
+      5: '5/5 estrelas — Nota máxima! Também achei sua companhia 10/10 😊⭐'
+    };
+
+    const phrases = [
+      'Erro 404: Opção "Vou pensar" não encontrada no servidor! 😌',
+      'Nem vem! Depois de hoje já temos créditos garantidos pro próximo 😂✨',
+      'Opa, escorregou! O botão de aprovar o 2º encontro é o da esquerda 👉',
+      'Esse botão está fora de serviço por motivos óbvios 🙈',
+      'Prometo que no próximo você escolhe o programa! Clica no outro 😊'
+    ];
+    const labels = ['Vou pensar 🤔', 'Será? 👀', 'Opa, errei! 🏃‍♂️', 'Bloqueado! 😌', 'Sem chance! ✨', 'Aprovado! 😊'];
+
+    const starBtns = document.querySelectorAll('.star-btn');
+    const starMsg = document.getElementById('star-msg');
+    const msg = document.getElementById('msg');
+    const yes = document.getElementById('yes');
+    const no = document.getElementById('no');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const back = document.getElementById('back');
+    const commentEl = document.getElementById('comment');
+    const sumStars = document.getElementById('sum-stars');
+    const sumMovie = document.getElementById('sum-movie');
+    const sumComment = document.getElementById('sum-comment');
+    const waBtn = document.getElementById('wa-btn');
+
+    starBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedStars = parseInt(btn.getAttribute('data-star'), 10);
+        starBtns.forEach(b => {
+          const val = parseInt(b.getAttribute('data-star'), 10);
+          b.classList.toggle('star-dim', val > selectedStars);
+        });
+        starMsg.textContent = starReactions[selectedStars];
+      });
+    });
+
+    const opts = document.querySelectorAll('.opt');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        verdict = btn.getAttribute('data-val');
+        opts.forEach(b => { b.classList.remove('active'); b.lastElementChild.textContent = ''; });
+        btn.classList.add('active');
+        btn.lastElementChild.textContent = '✓';
+      });
+    });
+
+    function dodge(e) {
+      if (e) e.preventDefault();
+      count++;
+      msg.textContent = phrases[(count - 1) % phrases.length];
+      msg.style.color = 'var(--accent-light)';
+      no.textContent = labels[Math.min(count, labels.length - 1)];
+      yes.style.transform = `scale(${Math.min(1 + count * 0.05, 1.22)})`;
+      const x = (Math.random() * 2 - 1) * 90;
+      const y = (Math.random() * 2 - 1) * 50;
+      const r = (Math.random() * 16 - 8).toFixed(1);
+      no.style.transform = `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px) rotate(${r}deg)`;
+    }
+
+    no.addEventListener('mouseenter', dodge);
+    no.addEventListener('touchstart', dodge, { passive: false });
+    no.addEventListener('click', dodge);
+
+    yes.addEventListener('click', () => {
+      const comm = commentEl.value.trim() || 'Sem reclamações, foi ótimo! 😊';
+      const starIcons = '⭐'.repeat(selectedStars);
+      sumStars.textContent = `${selectedStars}/5 (${starIcons})`;
+      sumMovie.textContent = verdict;
+      sumComment.textContent = `"${comm}"`;
+
+      const text =
+        `📋 *Avaliação Oficial do Nosso Cinema* 🎬✨\n\n` +
+        `⭐ *Nota pra companhia:* ${selectedStars}/5 (${starIcons})\n` +
+        `🎥 *Sobre o filme:* ${verdict}\n` +
+        `🔄 *Vale 2º encontro?* Aprovado! ✅\n` +
+        `💬 *Comentário:* ${comm}`;
+
+      waBtn.href = `https://wa.me/${MEU_WHATSAPP}?text=${encodeURIComponent(text)}`;
+
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+      boom();
+    });
+
+    back.addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step1.classList.remove('hidden');
+    });
+
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let parts = [];
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    addEventListener('resize', resize);
+    resize();
+
+    function boom() {
+      resize();
+      const cols = ['#f59e0b', '#10b981', '#fbbf24', '#ef4444', '#fb7185'];
+      parts = Array.from({ length: 80 }, (_, i) => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 100,
+        y: canvas.height / 2,
+        vx: (Math.random() - 0.5) * 14,
+        vy: -Math.random() * 14 - 4,
+        s: Math.random() * 7 + 4,
+        c: cols[i % cols.length],
+        r: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 10,
+        a: 1
+      }));
+      requestAnimationFrame(tick);
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      parts.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.32; p.r += p.vr; p.a -= 0.008;
+        if (p.a > 0 && p.y < canvas.height + 20) {
+          alive = true;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.a);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.r * Math.PI / 180);
+          ctx.fillStyle = p.c;
+          ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.65);
+          ctx.restore();
+        }
+      });
+      if (alive) requestAnimationFrame(tick);
+    }
+  </script>
+</body>
+</html>
