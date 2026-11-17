@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lembrete Especial — Cinema Hoje às 18:45 ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #171210;
+      --card: #231c19;
+      --elev: #2e2521;
+      --border: #3f332e;
+      --text: #faf5f0;
+      --muted: #b8a99e;
+      --accent: #f59e0b;
+      --accent-fg: #171210;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.14), transparent 65%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+    .top-bar { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .card {
+      width: 100%; max-width: 430px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 1.35rem; padding: 1.6rem; box-shadow: 0 24px 48px rgba(0,0,0,0.45);
+      position: relative; z-index: 10; animation: pop 0.45s ease forwards;
+    }
+    .hidden { display: none; }
+    @keyframes pop { from { opacity: 0; transform: scale(0.92) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+    .icon {
+      width: 3.4rem; height: 3.4rem; margin: 0 auto 0.75rem; border-radius: 1rem;
+      background: var(--elev); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+      animation: float 3.8s ease-in-out infinite;
+    }
+    h1 { font-size: 1.3rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; }
+    .sub { text-align: center; color: var(--muted); font-size: 0.86rem; line-height: 1.5; margin-bottom: 1.15rem; }
+    .movie-box { background: var(--elev); border: 1px solid var(--border); border-radius: 1rem; padding: 1rem; margin-bottom: 1.15rem; }
+    .movie-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); }
+    .tag { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; }
+    .title { font-size: 1.15rem; font-weight: 800; margin-top: 0.15rem; }
+    .badge { font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.5rem; border-radius: 0.4rem; background: var(--card); border: 1px solid var(--border); color: var(--muted); }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; padding-top: 0.8rem; font-size: 0.8rem; }
+    .meta-lbl { color: var(--muted); font-size: 0.7rem; }
+    .meta-val { font-weight: 700; }
+    .list-head { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 0.55rem; }
+    .list { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
+    .item { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.6rem 0.7rem; border-radius: 0.8rem; background: var(--elev); border: 1px solid var(--border); font-size: 0.78rem; line-height: 1.4; cursor: pointer; }
+    .item input { margin-top: 0.15rem; accent-color: var(--accent); }
+    .dodge-msg { text-align: center; font-size: 0.78rem; color: var(--muted); min-height: 1.25rem; margin-bottom: 0.75rem; font-weight: 500; }
+    .arena { display: flex; align-items: center; justify-content: center; gap: 0.7rem; min-height: 3.4rem; position: relative; }
+    .btn-yes {
+      background: var(--accent); color: var(--accent-fg); border: none; padding: 0.85rem 1.2rem;
+      border-radius: 0.85rem; font-family: inherit; font-size: 0.86rem; font-weight: 800;
+      cursor: pointer; box-shadow: 0 8px 20px rgba(245,158,11,0.28); transition: transform 0.2s; z-index: 10;
+    }
+    .btn-no {
+      background: var(--elev); color: var(--muted); border: 1px solid var(--border); padding: 0.85rem 0.9rem;
+      border-radius: 0.85rem; font-family: inherit; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); touch-action: none; z-index: 20;
+    }
+    .divider { border-bottom: 2px dashed var(--border); margin: 1rem -1.6rem; }
+    .row { display: flex; justify-content: space-between; padding: 0.48rem 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+    .row:last-child { border-bottom: none; }
+    .terms { margin-top: 0.9rem; padding: 0.9rem; border-radius: 0.85rem; background: var(--elev); border: 1px solid var(--border); font-size: 0.75rem; line-height: 1.5; }
+    .terms-title { font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .terms ul { list-style: none; color: var(--muted); display: flex; flex-direction: column; gap: 0.38rem; }
+    .terms strong { color: var(--text); }
+    .stamp { margin-top: 0.85rem; padding: 0.75rem; border-radius: 0.85rem; border: 1px dashed var(--accent); background: rgba(245,158,11,0.08); text-align: center; font-size: 0.78rem; line-height: 1.4; }
+    .btn-back { display: block; width: 100%; background: none; border: none; color: var(--muted); font-family: inherit; font-size: 0.75rem; margin-top: 0.7rem; cursor: pointer; }
+    footer { font-size: 0.74rem; color: var(--muted); margin-top: 1rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <header class="top-bar">🔔 Lembrete Especial • Hoje às 18:45 ✨</header>
+
+  <main id="step1" class="card">
+    <div class="icon">🎬</div>
+    <h1>Passando pra lembrar do nosso cinema hoje! ✨</h1>
+    <p class="sub">Só pra garantir que está tudo certo pro nosso programa de mais tarde (e confessar que já estou ansioso pela companhia).</p>
+
+    <div class="movie-box">
+      <div class="movie-head">
+        <div>
+          <div class="tag">🎥 Sessão de Hoje</div>
+          <div class="title">Lago dos Ossos</div>
+        </div>
+        <span class="badge">Suspense / Mistério</span>
+      </div>
+      <div class="meta">
+        <div><div class="meta-lbl">📍 Local</div><div class="meta-val">Shopping Via Sul</div></div>
+        <div><div class="meta-lbl">⏰ Horário</div><div class="meta-val">Hoje • 18:45</div></div>
+      </div>
+    </div>
+
+    <div class="list-head">
+      <span>🎒 Lista oficial do que levar:</span>
+      <span style="color:var(--accent)">4 itens</span>
+    </div>
+    <div class="list">
+      <label class="item"><input type="checkbox" checked /><span><strong>Um casaco por garantia:</strong> porque o ar-condicionado do Via Sul costuma ser nível Polo Norte 🥶</span></label>
+      <label class="item"><input type="checkbox" checked /><span><strong>Coragem pros sustos:</strong> como o filme é de suspense, segurar no meu braço se levar susto está 100% liberado 😌</span></label>
+      <label class="item"><input type="checkbox" checked /><span><strong>Espaço no estômago:</strong> reservado para as comidas, doces e besteiras da sessão 🍫🥤</span></label>
+      <label class="item"><input type="checkbox" checked /><span><strong>Um sorriso no rosto:</strong> porque a expectativa pra hoje já está lá em cima ✨</span></label>
+    </div>
+
+    <p id="msg" class="dodge-msg">Confirme abaixo que já está tudo pronto pra mais tarde 👇</p>
+
+    <div class="arena">
+      <button id="yes" type="button" class="btn-yes">Tudo pronto! Até mais tarde 😊✨</button>
+      <button id="no" type="button" class="btn-no">Ih, esqueci 🙈</button>
+    </div>
+  </main>
+
+  <section id="step2" class="card hidden">
+    <div class="icon">🎟️</div>
+    <div style="text-align:center;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:700;margin-bottom:0.25rem;">Presença Confirmada • Nosso Cinema ✨</div>
+    <h1>Combinado então! 😊🎉</h1>
+    <p class="sub" style="margin-bottom:0;">Nosso programa de mais tarde já está oficialmente garantido:</p>
+
+    <div class="divider"></div>
+
+    <div>
+      <div class="row"><span style="color:var(--muted)">🎬 Filme</span><strong>Lago dos Ossos</strong></div>
+      <div class="row"><span style="color:var(--muted)">📍 Local</span><strong>Shopping Via Sul</strong></div>
+      <div class="row"><span style="color:var(--muted)">⏰ Horário</span><strong>Hoje às 18:45</strong></div>
+      <div class="row"><span style="color:var(--muted)">✨ Companhia</span><strong>Nota 10/10</strong></div>
+    </div>
+
+    <div class="terms">
+      <div class="terms-title">📜 Regrinhas Oficiais de Hoje (Letra Miúda):</div>
+      <ul>
+        <li>• <strong>Cláusula do Suspense:</strong> Se <em>Lago dos Ossos</em> der medo, fingir que não levou susto é opcional (e segurar no meu braço está liberado). 😌</li>
+        <li>• <strong>Cláusula das Besteiras:</strong> Dividir os doces e lanches da sessão é altamente recomendado pelo Ministério dos Bons Encontros. 🍫🥤</li>
+        <li>• <strong>Cláusula do Trânsito:</strong> Se eu chegar 5 minutinhos em cima da hora, a culpa é oficialmente do trânsito (mas prometo compensar!). 🚗💨😂</li>
+        <li>• <strong>Validade Oficial:</strong> O clique no botão anterior já foi registrado — impossível voltar atrás agora! ✨</li>
+      </ul>
+    </div>
+
+    <div class="stamp">
+      <strong>✨ Te vejo às 18:45 no Shopping Via Sul!</strong><br />
+      <span style="color:var(--muted)">(Spoiler: mesmo se o filme for ruim, a companhia já salvou a noite 😊)</span>
+    </div>
+
+    <button id="back" type="button" class="btn-back">← Voltar para a lista</button>
+  </section>
+
+  <footer>Lembrete Especial • Hoje às 18:45 no Via Sul 🎬</footer>
+
+  <script>
+    let count = 0;
+    const phrases = [
+      'Erro 403: Esse botão não está funcionando hoje! 😌',
+      'Multa por tentativa de cancelar: vai ter que escolher o doce da sessão! 🍫',
+      'Opa, escorregou! O botão de confirmar é o da esquerda 👉',
+      'Nem brinca! Já estava contando com a sua companhia às 18:45 ✨',
+      'Esse botão foi desativado por motivos de força maior 🙈🎬',
+      'Pode clicar no outro sem medo, prometo que vai ser divertido! 😊✨'
+    ];
+    const labels = ['Ih, esqueci 🙈', 'Será? 👀', 'Opa, errei! 🏃‍♂️', 'Bloqueado! 😌', 'Aqui não! ✨', 'É hoje! 🎬'];
+
+    const msg = document.getElementById('msg');
+    const yes = document.getElementById('yes');
+    const no = document.getElementById('no');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const back = document.getElementById('back');
+
+    function dodge(e) {
+      if (e) e.preventDefault();
+      count++;
+      msg.textContent = phrases[(count - 1) % phrases.length];
+      msg.style.color = 'var(--accent)';
+      no.textContent = labels[Math.min(count, labels.length - 1)];
+      yes.style.transform = `scale(${Math.min(1 + count * 0.05, 1.22)})`;
+      const x = (Math.random() * 2 - 1) * 90;
+      const y = (Math.random() * 2 - 1) * 50;
+      const r = (Math.random() * 16 - 8).toFixed(1);
+      no.style.transform = `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px) rotate(${r}deg)`;
+    }
+
+    no.addEventListener('mouseenter', dodge);
+    no.addEventListener('touchstart', dodge, { passive: false });
+    no.addEventListener('click', dodge);
+
+    yes.addEventListener('click', () => {
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+      boom();
+    });
+
+    back.addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step1.classList.remove('hidden');
+    });
+
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let parts = [];
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    addEventListener('resize', resize);
+    resize();
+
+    function boom() {
+      resize();
+      const cols = ['#f59e0b', '#10b981', '#fbbf24', '#ef4444', '#fb7185'];
+      parts = Array.from({ length: 80 }, (_, i) => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 100,
+        y: canvas.height / 2,
+        vx: (Math.random() - 0.5) * 14,
+        vy: -Math.random() * 14 - 4,
+        s: Math.random() * 7 + 4,
+        c: cols[i % cols.length],
+        r: Math.random() * 360,
+        vr: (Math.random() - 0.5) * 10,
+        a: 1
+      }));
+      requestAnimationFrame(tick);
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      parts.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.32; p.r += p.vr; p.a -= 0.008;
+        if (p.a > 0 && p.y < canvas.height + 20) {
+          alive = true;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.a);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.r * Math.PI / 180);
+          ctx.fillStyle = p.c;
+          ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.65);
+          ctx.restore();
+        }
+      });
+      if (alive) requestAnimationFrame(tick);
+    }
+  </script>
+</body>
+</html>
