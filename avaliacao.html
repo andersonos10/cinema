@@ -7,13 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #110d0b;
-      --card: rgba(32, 24, 21, 0.9);
-      --elev: rgba(46, 35, 30, 0.88);
-      --border: rgba(245, 158, 11, 0.24);
-      --border-soft: rgba(255, 255, 255, 0.08);
+      --bg: #0f0a07;
+      --card: rgba(24, 16, 12, 0.84);
+      --elev: rgba(42, 29, 22, 0.86);
+      --border: rgba(245, 158, 11, 0.34);
+      --border-soft: rgba(255, 255, 255, 0.1);
       --text: #fcf8f5;
-      --muted: #bdaea3;
+      --muted: #ccbbae;
       --accent: #f59e0b;
       --accent-light: #fbbf24;
       --accent-fg: #140f0c;
@@ -21,10 +21,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(245, 158, 11, 0.18), transparent 55%),
-        radial-gradient(circle at 85% 95%, rgba(251, 113, 133, 0.12), transparent 55%),
-        var(--bg);
+      background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -34,82 +31,176 @@
       padding: 1.15rem;
       overflow-x: hidden;
       user-select: none;
+      position: relative;
     }
+
+    /* Cenário Turnê Manifesto Musical — Henrique & Juliano */
+    .stage-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(180deg, rgba(12, 8, 5, 0.55) 0%, rgba(18, 11, 7, 0.72) 50%, rgba(10, 6, 4, 0.92) 100%),
+        radial-gradient(circle at 50% 18%, rgba(251, 191, 36, 0.32), transparent 58%),
+        radial-gradient(circle at 18% 30%, rgba(245, 158, 11, 0.22), transparent 45%),
+        radial-gradient(circle at 82% 30%, rgba(217, 119, 6, 0.22), transparent 45%),
+        url('https://backstagemirante.com/wp-content/uploads/mem-image-cache/hero/4d8701e579881d357f4befc245ecc4dc.webp'),
+        url('https://i.ytimg.com/vi/K73g54E8ZtU/maxresdefault.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
+      filter: saturate(1.15) contrast(1.05);
+    }
+
+    /* Luzes de palco estilo Manifesto Musical (varal de luzes âmbar no topo) */
+    .stage-lights {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      pointer-events: none;
+      z-index: 2;
+      background:
+        radial-gradient(circle at 10% 14px, #fde68a 0px, rgba(245, 158, 11, 0.45) 8px, transparent 28px),
+        radial-gradient(circle at 26% 22px, #fde68a 0px, rgba(245, 158, 11, 0.45) 8px, transparent 28px),
+        radial-gradient(circle at 42% 16px, #fde68a 0px, rgba(245, 158, 11, 0.45) 8px, transparent 28px),
+        radial-gradient(circle at 58% 24px, #fde68a 0px, rgba(245, 158, 11, 0.45) 8px, transparent 28px),
+        radial-gradient(circle at 74% 16px, #fde68a 0px, rgba(245, 158, 11, 0.45) 8px, transparent 28px),
+        radial-gradient(circle at 90% 20px, #fde68a 0px, rgba(245, 158, 11, 0.45) 8px, transparent 28px);
+      animation: glowPulse 3.5s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { opacity: 0.75; }
+      to { opacity: 1; }
+    }
+
     #confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
     .top-pill {
-      font-size: 0.72rem; color: var(--accent-light); font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.7rem;
-      padding: 0.35rem 0.9rem; border-radius: 999px;
-      background: rgba(245, 158, 11, 0.1); border: 1px solid var(--border);
-      backdrop-filter: blur(8px);
+      position: relative; z-index: 10;
+      font-size: 0.71rem; color: var(--accent-light); font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 0.7rem;
+      padding: 0.36rem 0.95rem; border-radius: 999px;
+      background: rgba(24, 16, 12, 0.85); border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
-    .wrap { width: 100%; max-width: 435px; z-index: 10; display: flex; flex-direction: column; gap: 0.75rem; }
+    .wrap { width: 100%; max-width: 440px; z-index: 10; display: flex; flex-direction: column; gap: 0.75rem; }
 
-    /* YouTube Player Box */
-    .yt-box {
+    /* Music Player Card */
+    .player-card {
       background: var(--card); border: 1px solid var(--border);
       border-radius: 1.25rem; padding: 0.85rem;
-      box-shadow: 0 14px 32px rgba(0,0,0,0.45); backdrop-filter: blur(14px);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.55); backdrop-filter: blur(14px);
+      display: flex; flex-direction: column; gap: 0.65rem;
       animation: pop 0.4s ease forwards;
     }
-    .yt-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
-      margin-bottom: 0.65rem;
+    .player-main {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.7rem;
     }
-    .yt-info { min-width: 0; }
-    .yt-title {
-      font-size: 0.8rem; font-weight: 700; color: var(--text);
+    .player-left {
+      display: flex; align-items: center; gap: 0.7rem; min-width: 0; flex: 1;
+    }
+    .cover-wrap {
+      position: relative; width: 3.1rem; height: 3.1rem; border-radius: 0.85rem;
+      overflow: hidden; flex-shrink: 0; border: 1px solid var(--border);
+      background: var(--elev); display: flex; align-items: center; justify-content: center;
+    }
+    .cover-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .play-btn {
+      width: 2.7rem; height: 2.7rem; border-radius: 0.85rem; border: none;
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      color: var(--accent-fg); font-size: 1rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 15px rgba(245,158,11,0.38);
+      transition: transform 0.15s;
+    }
+    .play-btn:active { transform: scale(0.92); }
+    .track-info { min-width: 0; flex: 1; }
+    .track-row { display: flex; align-items: center; gap: 0.45rem; }
+    .track-name {
+      font-size: 0.82rem; font-weight: 800; color: var(--text);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .yt-sub { font-size: 0.7rem; color: var(--muted); }
-    .next-btn {
-      background: var(--elev); border: 1px solid var(--border-soft); color: var(--accent-light);
-      padding: 0.4rem 0.65rem; border-radius: 0.65rem; font-family: inherit;
-      font-size: 0.72rem; font-weight: 700; cursor: pointer; flex-shrink: 0;
-      transition: all 0.15s;
+    .track-sub {
+      font-size: 0.71rem; color: var(--accent-light); font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.1rem;
     }
-    .next-btn:hover { border-color: var(--border); background: rgba(245,158,11,0.12); }
-    .yt-frame-wrap {
-      width: 100%; height: 175px; border-radius: 0.9rem; overflow: hidden;
-      background: #000; border: 1px solid var(--border-soft);
+    .eq { display: flex; align-items: flex-end; gap: 2px; height: 13px; flex-shrink: 0; }
+    .eq span { width: 2.5px; height: 4px; background: var(--accent-light); border-radius: 99px; }
+    @keyframes eq1 { 0%, 100% { height: 4px; } 50% { height: 13px; } }
+    @keyframes eq2 { 0%, 100% { height: 12px; } 50% { height: 4px; } }
+    @keyframes eq3 { 0%, 100% { height: 5px; } 50% { height: 14px; } }
+    .eq.playing .b1 { animation: eq1 0.65s ease-in-out infinite; }
+    .eq.playing .b2 { animation: eq2 0.5s ease-in-out infinite; }
+    .eq.playing .b3 { animation: eq3 0.75s ease-in-out infinite; }
+
+    .player-actions {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding-top: 0.55rem; border-top: 1px solid var(--border-soft); font-size: 0.72rem;
     }
-    .yt-frame-wrap iframe { width: 100%; height: 100%; border: 0; }
-    .yt-foot {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: 0.5rem; font-size: 0.7rem; color: var(--muted);
+    .action-btn {
+      background: var(--elev); border: 1px solid var(--border-soft); color: var(--text);
+      padding: 0.38rem 0.65rem; border-radius: 0.6rem; font-family: inherit;
+      font-size: 0.71rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.15s;
     }
-    .yt-foot a { color: var(--accent-light); text-decoration: none; font-weight: 600; }
-    .yt-foot a:hover { text-decoration: underline; }
+    .action-btn:hover { border-color: var(--border); color: var(--accent-light); }
 
     /* Main Card */
     .card {
       width: 100%; background: var(--card); border: 1px solid var(--border);
-      border-radius: 1.45rem; padding: 1.6rem;
-      box-shadow: 0 28px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+      border-radius: 1.45rem; padding: 1.5rem;
+      box-shadow: 0 28px 60px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.1);
       backdrop-filter: blur(16px); position: relative; animation: pop 0.45s ease forwards;
     }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
     @keyframes pop { from { opacity: 0; transform: scale(0.93) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
     @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
     .icon {
-      width: 3.5rem; height: 3.5rem; margin: 0 auto 0.7rem; border-radius: 1.1rem;
-      background: linear-gradient(145deg, rgba(245,158,11,0.18), rgba(46,35,30,0.9));
+      width: 3.4rem; height: 3.4rem; margin: 0 auto 0.6rem; border-radius: 1.1rem;
+      background: linear-gradient(145deg, rgba(245,158,11,0.22), rgba(46,35,30,0.9));
       border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; font-size: 1.85rem;
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
       animation: float 3.8s ease-in-out infinite;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
     }
-    h1 { font-size: 1.32rem; font-weight: 800; text-align: center; margin-bottom: 0.4rem; letter-spacing: -0.02em; }
-    .sub { text-align: center; color: var(--muted); font-size: 0.84rem; line-height: 1.45; margin-bottom: 1.15rem; }
+    h1 { font-size: 1.28rem; font-weight: 800; text-align: center; margin-bottom: 0.35rem; letter-spacing: -0.02em; }
+    .sub { text-align: center; color: var(--muted); font-size: 0.82rem; line-height: 1.45; margin-bottom: 0.9rem; }
+
+    /* Pedido de Desculpas Oficial pelo Filme */
+    .apology-box {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(245, 158, 11, 0.14));
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      border-radius: 1rem;
+      padding: 0.8rem 0.9rem;
+      margin-bottom: 1.05rem;
+      font-size: 0.79rem;
+      line-height: 1.45;
+      color: var(--text);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .apology-title {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 800;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-light);
+      margin-bottom: 0.25rem;
+    }
+
     .sec-lbl { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.45rem; }
 
     /* Stars Box */
     .star-box {
       background: var(--elev); border: 1px solid var(--border-soft);
-      border-radius: 1.1rem; padding: 0.95rem; text-align: center; margin-bottom: 1.05rem;
+      border-radius: 1.1rem; padding: 0.9rem; text-align: center; margin-bottom: 1rem;
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
     }
-    .stars { display: flex; justify-content: center; gap: 0.5rem; margin: 0.4rem 0; }
+    .stars { display: flex; justify-content: center; gap: 0.5rem; margin: 0.35rem 0; }
     .star-btn {
       background: none; border: none; font-size: 1.8rem; cursor: pointer;
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s, filter 0.2s;
@@ -120,23 +211,23 @@
     .star-msg { font-size: 0.76rem; color: var(--accent-light); font-weight: 600; min-height: 1.1rem; }
 
     /* Options */
-    .opts { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.05rem; }
+    .opts { display: flex; flex-direction: column; gap: 0.48rem; margin-bottom: 1rem; }
     .opt {
-      width: 100%; text-align: left; padding: 0.72rem 0.85rem; border-radius: 0.9rem;
+      width: 100%; text-align: left; padding: 0.7rem 0.85rem; border-radius: 0.9rem;
       background: var(--elev); border: 1.5px solid var(--border-soft); color: var(--muted);
-      font-family: inherit; font-size: 0.79rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center; transition: all 0.18s;
     }
     .opt:hover { border-color: rgba(245,158,11,0.4); color: var(--text); }
     .opt.active {
       border-color: var(--accent); color: var(--text);
-      background: linear-gradient(90deg, rgba(245,158,11,0.16), rgba(245,158,11,0.05));
+      background: linear-gradient(90deg, rgba(245,158,11,0.18), rgba(245,158,11,0.06));
       box-shadow: 0 4px 15px rgba(245,158,11,0.12);
     }
     textarea {
-      width: 100%; padding: 0.75rem 0.85rem; border-radius: 0.9rem; background: var(--elev);
+      width: 100%; padding: 0.72rem 0.85rem; border-radius: 0.9rem; background: var(--elev);
       border: 1.5px solid var(--border-soft); color: var(--text); font-family: inherit;
-      font-size: 0.8rem; resize: none; margin-bottom: 0.95rem; outline: none;
+      font-size: 0.8rem; resize: none; margin-bottom: 0.9rem; outline: none;
       transition: border-color 0.2s;
     }
     textarea:focus { border-color: var(--accent); }
@@ -145,7 +236,7 @@
     .btn-yes {
       background: linear-gradient(135deg, var(--accent-light), var(--accent));
       color: var(--accent-fg); border: none; padding: 0.88rem 1.3rem;
-      border-radius: 0.9rem; font-family: inherit; font-size: 0.88rem; font-weight: 800;
+      border-radius: 0.9rem; font-family: inherit; font-size: 0.86rem; font-weight: 800;
       cursor: pointer; box-shadow: 0 8px 22px rgba(245,158,11,0.34); transition: transform 0.2s; z-index: 10;
     }
     .btn-no {
@@ -153,7 +244,7 @@
       border-radius: 0.9rem; font-family: inherit; font-size: 0.82rem; font-weight: 600;
       cursor: pointer; transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); touch-action: none; z-index: 20;
     }
-    .divider { border-bottom: 2px dashed var(--border-soft); margin: 0.95rem -1.6rem; }
+    .divider { border-bottom: 2px dashed var(--border-soft); margin: 0.95rem -1.5rem; }
     .row { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border-soft); font-size: 0.81rem; }
     .row:last-child { border-bottom: none; }
     .btn-wa {
@@ -164,37 +255,39 @@
       font-weight: 800; font-size: 0.92rem; box-shadow: 0 8px 22px rgba(245,158,11,0.34);
     }
     .btn-back { display: block; width: 100%; background: none; border: none; color: var(--muted); font-family: inherit; font-size: 0.75rem; margin-top: 0.75rem; cursor: pointer; }
-    footer { font-size: 0.74rem; color: var(--muted); margin-top: 1rem; text-align: center; }
+    footer { position: relative; z-index: 10; font-size: 0.73rem; color: var(--muted); margin-top: 1rem; text-align: center; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
   </style>
 </head>
 <body>
+  <div class="stage-bg"></div>
+  <div class="stage-lights"></div>
   <canvas id="confetti"></canvas>
+  <audio id="bg-audio" loop preload="auto"></audio>
 
-  <header class="top-pill">📋 Pesquisa Oficial • Pós-Cinema ✨</header>
+  <header class="top-pill">🎸 Turnê Manifesto Musical • Avaliação Pós-Cinema ✨</header>
 
   <div class="wrap">
-    <!-- Henrique & Juliano YouTube Player -->
-    <div class="yt-box">
-      <div class="yt-head">
-        <div class="yt-info">
-          <div id="yt-title" class="yt-title">🎶 Henrique & Juliano — Aquela Pessoa</div>
-          <div class="yt-sub">Trilha sonora oficial pra responder a avaliação</div>
+    <!-- Player Henrique & Juliano — Manifesto Musical -->
+    <div class="player-card">
+      <div class="player-main">
+        <div class="player-left">
+          <div class="cover-wrap" id="cover-box">🎸</div>
+          <div class="track-info">
+            <div class="track-row">
+              <span id="track-name" class="track-name">Henrique & Juliano — Manifesto Musical</span>
+              <div id="eq" class="eq">
+                <span class="b1"></span><span class="b2"></span><span class="b3"></span>
+              </div>
+            </div>
+            <div id="track-sub" class="track-sub">Toque no ▶ pra ouvir Manifesto Musical 🎶</div>
+          </div>
         </div>
-        <button id="next-yt" type="button" class="next-btn">⏭ Outra música</button>
+        <button id="play-btn" type="button" class="play-btn" title="Tocar / Pausar">▶</button>
       </div>
-      <div class="yt-frame-wrap">
-        <iframe
-          id="yt-iframe"
-          src="https://www.youtube.com/embed/a5vH9f0lHZg?rel=0&playsinline=1"
-          title="Henrique & Juliano no YouTube"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-      <div class="yt-foot">
-        <span>Dê o play no vídeo acima 👆</span>
-        <a id="yt-link" href="https://www.youtube.com/watch?v=a5vH9f0lHZg" target="_blank" rel="noopener noreferrer">
-          Abrir no YouTube ↗
+      <div class="player-actions">
+        <button id="next-btn" type="button" class="action-btn">⏭ Trocar música</button>
+        <a id="yt-link" href="https://www.youtube.com/watch?v=K73g54E8ZtU" target="_blank" rel="noopener noreferrer" class="action-btn">
+          ▶️ Abrir DVD no YouTube ↗
         </a>
       </div>
     </div>
@@ -203,10 +296,16 @@
     <main id="step1" class="card">
       <div class="icon">🎬</div>
       <h1>Avaliação Oficial do Nosso Cinema ✨</h1>
-      <p class="sub">O Ministério dos Bons Encontros solicita 30 segundos da sua atenção para avaliar a nossa noite no Via Sul:</p>
+      <p class="sub">30 segundinhos para registrar o veredito oficial da nossa ida ao Shopping Via Sul:</p>
+
+      <!-- Pedido de desculpas pelo filme péssimo -->
+      <div class="apology-box">
+        <div class="apology-title">🙏 Pedido Oficial de Desculpas</div>
+        Antes de qualquer coisa: <strong>me desculpa por esse filme!</strong> 😂 <em>Lago dos Ossos</em> conseguiu ser péssimo do começo ao fim. Prometo que eu também fui enganado pelo trailer!
+      </div>
 
       <div class="star-box">
-        <span class="sec-lbl" style="margin-bottom:0.15rem;">1. Nota para a sua companhia de hoje:</span>
+        <span class="sec-lbl" style="margin-bottom:0.15rem;">1. Descontando o filme ruim, nota pra companhia:</span>
         <div class="stars">
           <button type="button" class="star-btn" data-star="1">⭐</button>
           <button type="button" class="star-btn" data-star="2">⭐</button>
@@ -217,23 +316,23 @@
         <p id="star-msg" class="star-msg">Toque nas estrelas para escolher sua nota (1 a 5) ⭐</p>
       </div>
 
-      <span class="sec-lbl">2. O que achou do filme (Lago dos Ossos)?</span>
+      <span class="sec-lbl">2. Veredito sincero sobre Lago dos Ossos:</span>
       <div class="opts">
-        <button type="button" class="opt active" data-val="A companhia salvou o filme 😊">
-          <span>🎬 O filme foi ok, mas a companhia salvou a noite</span><span>✓</span>
+        <button type="button" class="opt active" data-val="O filme foi péssimo, mas a companhia salvou 😊">
+          <span>🎬 O filme foi péssimo, mas a companhia salvou a noite</span><span>✓</span>
         </button>
-        <button type="button" class="opt" data-val="Gostei do filme e da companhia! ✨">
-          <span>😱 Gostei! Deu uns sustos mas sobrevivemos bem</span><span></span>
+        <button type="button" class="opt" data-val="Filme horrível, pelo menos demos boas risadas 😂">
+          <span>😂 Filme horrível! Pelo menos serviu pra gente rir</span><span></span>
         </button>
-        <button type="button" class="opt" data-val="Na próxima vez eu escolho o filme 😂">
-          <span>😂 Na próxima vez sou eu quem escolhe o filme!</span><span></span>
+        <button type="button" class="opt" data-val="Merecemos indenização por ter assistido isso 🤦‍♀️">
+          <span>🤦‍♀️ Merecemos indenização por ter assistido esse filme</span><span></span>
         </button>
       </div>
 
-      <label for="comment" class="sec-lbl">3. Algum elogio, reclamação ou sugestão pro próximo?</label>
-      <textarea id="comment" rows="2" placeholder="Ex: Gostei muito de hoje! Na próxima vamos em tal lugar..."></textarea>
+      <label id="comment-lbl" for="comment" class="sec-lbl">3. Algum elogio, reclamação ou desabafo sobre o filme?</label>
+      <textarea id="comment" rows="2" placeholder="Ex: O filme era muito ruim, mas a conversa e a companhia valeram muito a pena..."></textarea>
 
-      <p id="msg" class="dodge-msg">Pergunta final: vale um segundo encontro em breve? 👀</p>
+      <p id="msg" class="dodge-msg">Pergunta final: tirando o filme, vale um segundo encontro? 👀</p>
 
       <div class="arena">
         <button id="yes" type="button" class="btn-yes">Vale sim! Aprovado 😊✨</button>
@@ -246,17 +345,17 @@
       <div class="icon">🏆</div>
       <div style="text-align:center;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-light);font-weight:700;margin-bottom:0.25rem;">Avaliação Concluída • Nosso Cinema</div>
       <h1>Feedback Registrado! 🎉</h1>
-      <p class="sub" style="margin-bottom:0;">Confira o resumo oficial antes de enviar no WhatsApp:</p>
+      <p class="sub" style="margin-bottom:0;">Confira o resumo oficial antes de me enviar no WhatsApp:</p>
 
       <div class="divider"></div>
 
       <div>
         <div class="row"><span style="color:var(--muted)">⭐ Nota da Companhia</span><strong id="sum-stars">5/5 (⭐⭐⭐⭐⭐)</strong></div>
-        <div class="row"><span style="color:var(--muted)">🎬 Sobre o Filme</span><strong id="sum-movie" style="text-align:right">A companhia salvou o filme 😊</strong></div>
-        <div class="row"><span style="color:var(--muted)">🔄 Vale 2º Encontro?</span><strong>Sim, aprovado! ✨</strong></div>
+        <div class="row"><span style="color:var(--muted)">🎬 Sobre o Filme</span><strong id="sum-movie" style="text-align:right">O filme foi péssimo, mas a companhia salvou 😊</strong></div>
+        <div id="row-next" class="row"><span style="color:var(--muted)">🔄 Vale 2º Encontro?</span><strong>Sim, aprovado! ✨</strong></div>
         <div class="row" style="flex-direction:column;gap:0.25rem;">
           <span style="color:var(--muted)">💬 Seu Comentário:</span>
-          <strong id="sum-comment" style="font-style:italic">"Sem reclamações, foi ótimo!"</strong>
+          <strong id="sum-comment" style="font-style:italic">"Sem reclamações da companhia, só do filme!"</strong>
         </div>
       </div>
 
@@ -267,51 +366,107 @@
     </section>
   </div>
 
-  <footer>SAC Oficial do Nosso Cinema • Shopping Via Sul 🎬</footer>
+  <footer>Cenário Manifesto Musical • Henrique & Juliano 🎸</footer>
 
   <script>
     const MEU_WHATSAPP = '5585987899323';
 
     let selectedStars = 5;
-    let verdict = 'A companhia salvou o filme 😊';
+    let verdict = 'O filme foi péssimo, mas a companhia salvou 😊';
     let count = 0;
 
-    // Playlist do Henrique & Juliano no YouTube
-    const ytSongs = [
-      { id: 'a5vH9f0lHZg', title: '🎶 Henrique & Juliano — Aquela Pessoa' },
-      { id: 'DUii0oyELNw', title: '🎶 Henrique & Juliano — Completa a Frase' },
-      { id: 'oD9izvb3gO0', title: '🎶 Henrique & Juliano — Quase Algo' },
-      { id: 'r1SgAoRsJ98', title: '🎶 Henrique & Juliano — De Trás Pra Frente' }
-    ];
-    let ytIdx = 0;
-
-    const ytIframe = document.getElementById('yt-iframe');
-    const ytTitle = document.getElementById('yt-title');
+    const audio = document.getElementById('bg-audio');
+    const playBtn = document.getElementById('play-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const trackName = document.getElementById('track-name');
+    const trackSub = document.getElementById('track-sub');
+    const coverBox = document.getElementById('cover-box');
     const ytLink = document.getElementById('yt-link');
-    const nextYt = document.getElementById('next-yt');
+    const eq = document.getElementById('eq');
 
-    nextYt.addEventListener('click', () => {
-      ytIdx = (ytIdx + 1) % ytSongs.length;
-      const s = ytSongs[ytIdx];
-      ytTitle.textContent = s.title;
-      ytIframe.src = `https://www.youtube.com/embed/${s.id}?autoplay=1&rel=0&playsinline=1`;
-      ytLink.href = `https://www.youtube.com/watch?v=${s.id}`;
+    let tracks = [];
+    let trackIdx = 0;
+    let playing = false;
+    let autoStarted = false;
+
+    function loadTrack(idx) {
+      if (!tracks.length) return;
+      trackIdx = idx % tracks.length;
+      const t = tracks[trackIdx];
+      audio.src = t.previewUrl;
+      trackName.textContent = `${t.trackName} — Henrique & Juliano`;
+      if (t.artworkUrl100) {
+        const hiRes = t.artworkUrl100.replace('100x100bb', '600x600bb');
+        coverBox.innerHTML = `<img src="${hiRes}" alt="Manifesto Musical" />`;
+      }
+      const q = encodeURIComponent(`Henrique e Juliano ${t.trackName} Manifesto Musical`);
+      ytLink.href = `https://www.youtube.com/results?search_query=${q}`;
+    }
+
+    function setPlayUI(state) {
+      playing = state;
+      playBtn.textContent = state ? '⏸' : '▶';
+      eq.classList.toggle('playing', state);
+      trackSub.textContent = state ? 'Tocando • Manifesto Musical 🎶' : 'Pausado • Toque no ▶ pra ouvir';
+    }
+
+    function toggleMusic() {
+      if (!audio.src) return;
+      if (playing) {
+        audio.pause();
+        setPlayUI(false);
+      } else {
+        audio.play().then(() => setPlayUI(true)).catch(() => {});
+      }
+    }
+
+    window.loadHJ = function(data) {
+      if (data && data.results) {
+        tracks = data.results.filter(t => t.previewUrl);
+        if (tracks.length > 0) loadTrack(0);
+      }
+    };
+
+    const s = document.createElement('script');
+    s.src = 'https://itunes.apple.com/search?term=henrique+e+juliano+manifesto+musical&entity=song&limit=15&country=BR&callback=loadHJ';
+    document.body.appendChild(s);
+
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      autoStarted = true;
+      toggleMusic();
     });
 
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (tracks.length > 0) {
+        loadTrack(trackIdx + 1);
+        audio.play().then(() => setPlayUI(true)).catch(() => {});
+      }
+    });
+
+    document.body.addEventListener('click', () => {
+      if (!autoStarted && !playing && audio.src) {
+        autoStarted = true;
+        toggleMusic();
+      }
+    }, { once: true });
+
+    // Reações das estrelas (1 e 2 estrelas NÃO citam próximo encontro)
     const starReactions = {
-      1: '1/5 estrela — Eita! Vou ter que me esforçar muito mais na próxima 😅',
-      2: '2/5 estrelas — Pelo menos não foi zero, né? Prometo melhorar! 😂',
-      3: '3/5 estrelas — Na média! No próximo encontro a gente sobe essa nota 😊',
-      4: '4/5 estrelas — Quase gabaritei! No próximo eu chego no 5 ✨',
-      5: '5/5 estrelas — Nota máxima! Também achei sua companhia 10/10 😊⭐'
+      1: '1/5 estrela — Justíssimo, aquele filme realmente estragou tudo! 😅',
+      2: '2/5 estrelas — Pelo menos sobrevivemos a Lago dos Ossos! 😂',
+      3: '3/5 estrelas — Na média! Apesar do filme péssimo, a conversa salvou 😊',
+      4: '4/5 estrelas — Quase gabaritei! No próximo você escolhe o filme ✨',
+      5: '5/5 estrelas — Nota máxima! Sua companhia salvou 100% a noite 😊⭐'
     };
 
     const phrases = [
       'Erro 404: Opção "Vou pensar" não encontrada no servidor! 😌',
-      'Nem vem! Depois de hoje já temos créditos garantidos pro próximo 😂✨',
+      'Prometo que da próxima vez eu sou proibido de escolher o filme! 😂✨',
       'Opa, escorregou! O botão de aprovar o 2º encontro é o da esquerda 👉',
       'Esse botão está fora de serviço por motivos óbvios 🙈',
-      'Prometo que no próximo você escolhe o programa! Clica no outro 😊'
+      'No próximo você escolhe o lugar e o programa! Clica no outro 😊'
     ];
     const labels = ['Vou pensar 🤔', 'Será? 👀', 'Opa, errei! 🏃‍♂️', 'Bloqueado! 😌', 'Sem chance! ✨', 'Aprovado! 😊'];
 
@@ -327,7 +482,25 @@
     const sumStars = document.getElementById('sum-stars');
     const sumMovie = document.getElementById('sum-movie');
     const sumComment = document.getElementById('sum-comment');
+    const rowNext = document.getElementById('row-next');
     const waBtn = document.getElementById('wa-btn');
+
+    function updateNextDateVisibility() {
+      if (selectedStars <= 2) {
+        // Até 2 estrelas: NÃO cita próximo encontro
+        msg.textContent = 'Obrigado pela avaliação sincera! 🙏';
+        msg.style.color = 'var(--muted)';
+        yes.textContent = 'Concluir e Enviar Avaliação 📩';
+        yes.style.transform = 'scale(1)';
+        no.classList.add('hidden');
+      } else {
+        // 3 a 5 estrelas: mostra pergunta do 2º encontro
+        msg.textContent = 'Pergunta final: tirando o filme, vale um segundo encontro? 👀';
+        msg.style.color = 'var(--text)';
+        yes.textContent = 'Vale sim! Aprovado 😊✨';
+        no.classList.remove('hidden');
+      }
+    }
 
     starBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -337,6 +510,7 @@
           b.classList.toggle('star-dim', val > selectedStars);
         });
         starMsg.textContent = starReactions[selectedStars];
+        updateNextDateVisibility();
       });
     });
 
@@ -351,6 +525,7 @@
     });
 
     function dodge(e) {
+      if (selectedStars <= 2) return;
       if (e) e.preventDefault();
       count++;
       msg.textContent = phrases[(count - 1) % phrases.length];
@@ -368,18 +543,25 @@
     no.addEventListener('click', dodge);
 
     yes.addEventListener('click', () => {
-      const comm = commentEl.value.trim() || 'Sem reclamações, foi ótimo! 😊';
+      const comm = commentEl.value.trim() || 'Sem comentários extras sobre o filme 😅';
       const starIcons = '⭐'.repeat(selectedStars);
       sumStars.textContent = `${selectedStars}/5 (${starIcons})`;
       sumMovie.textContent = verdict;
       sumComment.textContent = `"${comm}"`;
 
-      const text =
+      let text =
         `📋 *Avaliação Oficial do Nosso Cinema* 🎬✨\n\n` +
         `⭐ *Nota pra companhia:* ${selectedStars}/5 (${starIcons})\n` +
-        `🎥 *Sobre o filme:* ${verdict}\n` +
-        `🔄 *Vale 2º encontro?* Aprovado! ✅\n` +
-        `💬 *Comentário:* ${comm}`;
+        `🎥 *Sobre Lago dos Ossos:* ${verdict}\n`;
+
+      if (selectedStars <= 2) {
+        rowNext.classList.add('hidden');
+      } else {
+        rowNext.classList.remove('hidden');
+        text += `🔄 *Vale 2º encontro (sem filme ruim)?* Aprovado! ✅\n`;
+      }
+
+      text += `💬 *Comentário:* ${comm}`;
 
       waBtn.href = `https://wa.me/${MEU_WHATSAPP}?text=${encodeURIComponent(text)}`;
 
